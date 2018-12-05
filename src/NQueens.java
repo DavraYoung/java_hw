@@ -12,12 +12,13 @@ public class NQueens extends Game{
     }
 
     public void insertSolutions(int[] q) {
+        solutionSequance.clear();
         int n = q.length;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (q[i] == j) System.out.println("i,j = "+i+""+j);;;
+                if (q[i] == j)
+                    solutionSequance.add(new CustomPosition(i,j));
             }
-
         }
 
     }

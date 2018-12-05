@@ -2,6 +2,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Pad extends JButton {
@@ -9,6 +10,7 @@ public class Pad extends JButton {
     private boolean colored;
     private boolean isVisited;
     private CustomPosition index;
+
     public Pad(boolean colored, int x, int y) {
         this.colored = colored;
         index = new CustomPosition(x, y);
@@ -23,14 +25,15 @@ public class Pad extends JButton {
     }
 
     public void visit(int turn) {
-        if(previous!=null)
+        if (previous != null)
             previous.setIcon(null);
         this.setBackground(Color.YELLOW);
         try {
-            this.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("knight.png"))));
+            this.setIcon(getScaledImage("knight.png",getWidth(),getHeight()));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 
         isVisited = true;
         this.setText(String.valueOf(turn));
@@ -38,13 +41,31 @@ public class Pad extends JButton {
     }
 
     private void initPanel() {
-
-        this.setBackground(colored ? Color.BLACK : Color.WHITE);
+        this.setBackground(colored ? new Color(210,150,20) : new Color(245,242,136));
         this.setVisible(true);
     }
 
     public boolean isColored() {
         return colored;
+    }
+
+    public void queen() {
+        try {
+            this.setIcon(getScaledImage("queen.png",getWidth(),getHeight()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //this.setText(String.valueOf(turn));
+
+    }
+
+    private ImageIcon getScaledImage(String path, int width, int height) throws IOException {
+        Image img;
+        img = (new ImageIcon(
+                ImageIO.read(
+                        getClass().getResource(path)))).getImage();
+        Image newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
+        return new ImageIcon(newimg);
     }
 
     public boolean isVisited() {

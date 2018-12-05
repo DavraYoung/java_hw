@@ -27,6 +27,12 @@ public class SideBar extends JPanel {
         gameList = new JComboBox<>(new String[]{"Board's Tour", "Queen"});
         nextBtn = new JButton("Next");
         exitButton = new JButton("Exit");
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
         inputLabel = new JLabel("Choose size N:");
 
         JPanel comboBoxes = new JPanel(new BorderLayout());

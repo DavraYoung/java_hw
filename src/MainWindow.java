@@ -16,6 +16,7 @@ public class MainWindow extends JFrame {
     private SideBar sideBar;
     private JSplitPane splitPane;
     private Game currentGame = Game.KnightTour;
+
     private enum Game {
         KnightTour,
         Queen
@@ -41,26 +42,32 @@ public class MainWindow extends JFrame {
         return (Pad) component;
     }
 
-    private Dimension getSizeOfPad(){
-        return getPadAtPosition(new CustomPosition(0,0)).getSize();
+    private Dimension getSizeOfPad() {
+        return getPadAtPosition(new CustomPosition(0, 0)).getSize();
     }
 
     class NextAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            if (initialPosition == null) {
-                MainWindow frame = (MainWindow) SwingUtilities.getRoot((JButton) actionEvent.getSource());
-                JOptionPane.showMessageDialog(frame, "Click on eny pad to set initial position!");
-            } else {
-                switch (currentGame) {
-                    case KnightTour:
-                        if (turn + 1 != knightTour.solutionSequance.size())
-                            getPadAtPosition(knightTour.solutionSequance.get(++turn)).visit(turn);
-                    case Queen:
-                        queens = new NQueens(n);
-                        queens.solve(n);
-                }
+
+
+            switch (currentGame) {
+                case KnightTour:
+                    if (initialPosition == null) {
+                        MainWindow frame = (MainWindow) SwingUtilities.getRoot((JButton) actionEvent.getSource());
+                        JOptionPane.showMessageDialog(frame, "Click on eny pad to set initial position!");
+                    } else if (turn + 1 != knightTour.solutionSequance.size())
+                        getPadAtPosition(knightTour.solutionSequance.get(++turn)).visit(turn);
+                    break;
+                case Queen:
+                    queens = new NQueens(n);
+                    queens.solve(n);
+                    for (int i = 0; i < queens.solutionSequance.size(); i++) {
+                        getPadAtPosition(queens.solutionSequance.get(i)).queen();
+                    }
+                    break;
             }
+
 
         }
     }
@@ -100,12 +107,14 @@ public class MainWindow extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            Pad pad = (Pad) actionEvent.getSource();
-            disableAllPads(this);
-            initialPosition = pad.getIndex();
-            pad.visit(0);
+
+
             switch (currentGame) {
                 case KnightTour:
+                    Pad pad = (Pad) actionEvent.getSource();
+                    disableAllPads(this);
+                    initialPosition = pad.getIndex();
+                    pad.visit(0);
                     System.out.println("n = " + n);
                     knightTour = new KnightTour(n);
                     knightTour.solve(initialPosition);
@@ -122,7 +131,6 @@ public class MainWindow extends JFrame {
     }
 
 
-
     void fillTheBoard() {
         InitialPositionAction action = new InitialPositionAction();
         for (int i = 0; i < n; i++)
@@ -133,7 +141,7 @@ public class MainWindow extends JFrame {
     private void initBoard() {
         board = new JPanel(new GridLayout(n, n));
         fillTheBoard();
-        board.setSize(getPadAtPosition(new CustomPosition(0,0)).getSize());
+        board.setSize(getPadAtPosition(new CustomPosition(0, 0)).getSize());
     }
 
     private void initSideBar() {
