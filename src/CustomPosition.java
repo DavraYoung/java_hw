@@ -1,7 +1,6 @@
-import javax.swing.text.Position;
 import java.util.Objects;
 
-public class KnightPosition {
+public class CustomPosition {
     private int x;
     private int y;
 
@@ -13,7 +12,7 @@ public class KnightPosition {
         return y;
     }
 
-    public KnightPosition(int x, int y) {
+    public CustomPosition(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -27,7 +26,7 @@ public class KnightPosition {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        KnightPosition that = (KnightPosition) o;
+        CustomPosition that = (CustomPosition) o;
         return x == that.x &&
                 y == that.y;
     }
